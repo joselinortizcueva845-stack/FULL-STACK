@@ -8,6 +8,9 @@ function validateInput(values, options) {
   if (values.email !== undefined && !/^\S+@\S+\.\S+$/.test(values.email)) {
     badRequest('El correo electrónico no es válido.');
   }
+  if (values.password !== undefined && !values.password.trim()) {
+    badRequest('La contraseña es obligatoria.');
+  }
   if (values.password !== undefined && values.password.length < 8) {
     badRequest('La contraseña debe tener al menos 8 caracteres.');
   }

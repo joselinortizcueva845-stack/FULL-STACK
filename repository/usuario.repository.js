@@ -10,6 +10,10 @@ async function findById(id) {
 	return Usuario.findByPk(id, { attributes });
 }
 
+async function findByEmail(email) {
+	return Usuario.findOne({ where: { email } });
+}
+
 async function create(values) {
 	const usuario = await Usuario.create(values);
 	return findById(usuario.id);
@@ -24,4 +28,4 @@ async function remove(id) {
 	return (await Usuario.destroy({ where: { id } })) > 0;
 }
 
-module.exports = { list, findById, create, update, remove };
+module.exports = { list, findById, findByEmail, create, update, remove };
