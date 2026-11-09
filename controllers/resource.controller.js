@@ -40,7 +40,7 @@ function createController(model, repository, validator, hooks = {}) {
       try {
         const values = validator.validateInput(req.body, { partial: true });
         if (!Object.keys(values).length) badRequest('Indica al menos un campo para actualizar.');
-        if (hooks.beforeUpdate) await hooks.beforeUpdate(values);
+        if (hooks.beforeUpdate) await hooks.beforeUpdate(values, getId(req.params.id));
         const item = await repository.update(getId(req.params.id), values);
         if (!item) return res.status(404).json({ error: 'Registro no encontrado.' });
         return res.json(item);

@@ -16,6 +16,11 @@ const Usuario = sequelize.define('Usuario', {
     allowNull: false,
     unique: true,
   },
+  dni: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+    unique: true,
+  },
   password: {
     type: DataTypes.STRING(255),
     allowNull: false,
@@ -23,6 +28,19 @@ const Usuario = sequelize.define('Usuario', {
   rol: {
     type: DataTypes.ENUM('paciente', 'especialista', 'admin'),
     allowNull: false,
+  },
+  especialidad: {
+    type: DataTypes.STRING(120),
+    allowNull: true,
+  },
+  disponibilidad: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  activo: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
   },
   creado_en: {
     type: DataTypes.DATE,

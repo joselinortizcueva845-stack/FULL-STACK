@@ -1,9 +1,11 @@
 const express = require('express');
-const consultasRoutes = require('./Routes/consultas.routes');
 const { sequelize } = require('./Models');
+const corsMiddleware = require('./middleware/cors.middleware');
+const consultasRoutes = require('./Routes/consultas.routes');
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
+app.use(corsMiddleware);
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -31,11 +33,19 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ error: err.errors.map((item) => item.message).join(', ') });
   }
 
+  if (err.statusCode === 403) {
+    return res.status(403).json({ error: err.message });
+  }
+
   console.error(err);
   return res.status(500).json({ error: 'Error interno del servidor.' });
 });
 
 async function startServer() {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET debe estar configurada antes de iniciar el servidor.');
+  }
+
   await sequelize.authenticate();
   await sequelize.sync();
   app.listen(port, () => {
